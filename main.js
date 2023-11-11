@@ -3,13 +3,13 @@ carCanvas.width = 200;
 const carCtx = carCanvas.getContext("2d");
 
 const networkCanvas = document.getElementById("networkCanvas");
-networkCanvas.width = 400;
+networkCanvas.width = 650;
 const networkCtx = networkCanvas.getContext("2d");
 
 const road = new Road(carCanvas.width / 2, carCanvas.width * 0.9);
 
-N = 100;
-const cars = generateCars(N);
+N = 250;
+let cars = generateCars(N);
 let bestCar = cars[0];
 
 const bestBrainJSON = localStorage.getItem("bestBrain");
@@ -17,19 +17,19 @@ if (bestBrainJSON) {
   for (let i = 0; i < cars.length; i++) {
     cars[i].brain = JSON.parse(bestBrainJSON);
     if (i > 0) {
-      NeuralNetwork.mutate(cars[i].brain, 0.4);
+      NeuralNetwork.mutate(cars[i].brain, 0.3);
     }
   }
 }
 
 const traffic = [
-  new Car(road.getLaneCenter(1), -100, 30, 50, "DUMMY", 1.5, getRandomColor()),
-  new Car(road.getLaneCenter(0), -300, 30, 50, "DUMMY", 1.5, getRandomColor()),
-  new Car(road.getLaneCenter(2), -300, 30, 50, "DUMMY", 1.5, getRandomColor()),
-  new Car(road.getLaneCenter(0), -500, 30, 50, "DUMMY", 1.5, getRandomColor()),
-  new Car(road.getLaneCenter(1), -500, 30, 50, "DUMMY", 1.5, getRandomColor()),
-  new Car(road.getLaneCenter(1), -700, 30, 50, "DUMMY", 1.5, getRandomColor()),
-  new Car(road.getLaneCenter(2), -700, 30, 50, "DUMMY", 1.5, getRandomColor()),
+  new Car(road.getLaneCenter(1), -100, 30, 50, "DUMMY", 2, getRandomColor()),
+  new Car(road.getLaneCenter(0), -300, 30, 50, "DUMMY", 2, getRandomColor()),
+  new Car(road.getLaneCenter(2), -300, 30, 50, "DUMMY", 2, getRandomColor()),
+  new Car(road.getLaneCenter(0), -500, 30, 50, "DUMMY", 2, getRandomColor()),
+  new Car(road.getLaneCenter(1), -500, 30, 50, "DUMMY", 2, getRandomColor()),
+  new Car(road.getLaneCenter(1), -700, 30, 50, "DUMMY", 2, getRandomColor()),
+  new Car(road.getLaneCenter(2), -700, 30, 50, "DUMMY", 2, getRandomColor()),
 ];
 
 animate();
@@ -53,6 +53,8 @@ function generateCars(N) {
 }
 
 function animate(time) {
+  cars = cars.filter((car) => !car.damaged);
+
   for (let i = 0; i < traffic.length; i++) {
     traffic[i].update(road.borders, []);
   }
