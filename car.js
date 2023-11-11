@@ -1,5 +1,5 @@
 class Car {
-  constructor(x, y, width, height, controlType, maxSpeed = 3) {
+  constructor(x, y, width, height, controlType, maxSpeed = 2) {
     this.x = x;
     this.y = y;
     this.width = width;
@@ -127,7 +127,7 @@ class Car {
     this.y -= Math.cos(this.angle) * this.speed;
   }
 
-  draw(ctx, color) {
+  draw(ctx, color, drawSensor = false) {
     ctx.fillStyle = this.damaged ? "gray" : color;
 
     ctx.beginPath();
@@ -136,6 +136,9 @@ class Car {
       ctx.lineTo(this.polygon[i].x, this.polygon[i].y);
     }
     ctx.fill();
-    this.sensor && this.sensor.draw(ctx);
+
+    if (this.sensor && drawSensor) {
+      this.sensor.draw(ctx);
+    }
   }
 }
